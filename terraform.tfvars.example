@@ -1,0 +1,6 @@
+# Fictional examples. Put actual values in a private -var-file outside Git.
+account_id = "00000000000000000000000000000000"
+zone_id    = "11111111111111111111111111111111"
+hostname   = "ha.example.invalid"
+# Optional if HA is not at the default http://127.0.0.1:8123:
+# origin_service = "http://home-assistant:8123"

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" role="img" aria-labelledby="title desc">
+  <title id="title">From a Terraform template to a verified Home Assistant route</title>
+  <desc id="desc">Five steps: keep account, zone and hostname private; review and apply three Cloudflare resources; start the connector; configure and verify Home Assistant; operate with protected backups and a rollback path. Terraform success does not establish runtime health.</desc>
+  <defs>
+    <linearGradient id="paper" x2="1" y2="1"><stop stop-color="#f3f8ff"/><stop offset="1" stop-color="#eaf6f1"/></linearGradient>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" stroke="#6a8295" stroke-width="1.5" fill="none"/></marker>
+  </defs>
+  <rect width="1200" height="500" rx="24" fill="url(#paper)"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="42" y="43" font-size="12" font-weight="700" letter-spacing="2" fill="#356e83">THE SETUP JOURNEY</text>
+    <text x="42" y="82" font-size="31" font-weight="700" fill="#143049">Provision first. Verify the whole path.</text>
+    <text x="42" y="112" font-size="17" fill="#4d687d">Three installation values plus your API token. No HCL changes for an ordinary new setup.</text>
+
+    <path d="M222 230H271M450 230H499M678 230H727M906 230H955" stroke="#6a8295" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="42" y="160" width="184" height="204" rx="15" fill="#fff" stroke="#a9c9e3"/>
+    <circle cx="70" cy="189" r="15" fill="#236f9a"/>
+    <text x="70" y="194" font-size="14" text-anchor="middle" font-weight="700" fill="#fff">1</text>
+    <text x="62" y="229" font-size="20" font-weight="700" fill="#174666">Prepare</text>
+    <text x="62" y="257" font-size="15" fill="#3a586e">Account + zone</text>
+    <text x="62" y="279" font-size="15" fill="#3a586e">Your hostname</text>
+    <text x="62" y="301" font-size="15" fill="#3a586e">Scoped API token</text>
+    <rect x="61" y="322" width="141" height="24" rx="12" fill="#e7f2fb"/>
+    <text x="132" y="338" font-size="11" font-weight="700" text-anchor="middle" fill="#236589">PRIVATE INPUTS</text>
+
+    <rect x="270" y="160" width="184" height="204" rx="15" fill="#fff" stroke="#d1b18e"/>
+    <circle cx="298" cy="189" r="15" fill="#a15c20"/>
+    <text x="298" y="194" font-size="14" text-anchor="middle" font-weight="700" fill="#fff">2</text>
+    <text x="290" y="229" font-size="20" font-weight="700" fill="#784113">Review + apply</text>
+    <text x="290" y="257" font-size="15" fill="#66533e">Tunnel</text>
+    <text x="290" y="279" font-size="15" fill="#66533e">Route configuration</text>
+    <text x="290" y="301" font-size="15" fill="#66533e">Proxied DNS</text>
+    <rect x="289" y="322" width="145" height="24" rx="12" fill="#fff1e3"/>
+    <text x="362" y="338" font-size="11" font-weight="700" text-anchor="middle" fill="#92571f">3 NEW RESOURCES</text>
+
+    <rect x="498" y="160" width="184" height="204" rx="15" fill="#fff" stroke="#b9a9d9"/>
+    <circle cx="526" cy="189" r="15" fill="#7553a5"/>
+    <text x="526" y="194" font-size="14" text-anchor="middle" font-weight="700" fill="#fff">3</text>
+    <text x="518" y="229" font-size="20" font-weight="700" fill="#593b7e">Connect</text>
+    <text x="518" y="257" font-size="15" fill="#5e5270">Obtain tunnel token</text>
+    <text x="518" y="279" font-size="15" fill="#5e5270">Run cloudflared</text>
+    <text x="518" y="301" font-size="15" fill="#5e5270">Confirm origin route</text>
+    <rect x="517" y="322" width="145" height="24" rx="12" fill="#f0eafa"/>
+    <text x="590" y="338" font-size="11" font-weight="700" text-anchor="middle" fill="#684798">YOUR RUNTIME</text>
+
+    <rect x="726" y="160" width="184" height="204" rx="15" fill="#fff" stroke="#9ccdbb"/>
+    <circle cx="754" cy="189" r="15" fill="#207c60"/>
+    <text x="754" y="194" font-size="14" text-anchor="middle" font-weight="700" fill="#fff">4</text>
+    <text x="746" y="229" font-size="20" font-weight="700" fill="#175e49">Verify HA</text>
+    <text x="746" y="257" font-size="15" fill="#3c6558">Narrow proxy trust</text>
+    <text x="746" y="279" font-size="15" fill="#3c6558">HTTPS + login</text>
+    <text x="746" y="301" font-size="15" fill="#3c6558">Live UI + clients</text>
+    <rect x="745" y="322" width="145" height="24" rx="12" fill="#e5f5ee"/>
+    <text x="818" y="338" font-size="11" font-weight="700" text-anchor="middle" fill="#206c52">EXTERNAL NETWORK</text>
+
+    <rect x="954" y="160" width="204" height="204" rx="15" fill="#fff" stroke="#9fb8cb"/>
+    <circle cx="982" cy="189" r="15" fill="#3c6686"/>
+    <text x="982" y="194" font-size="14" text-anchor="middle" font-weight="700" fill="#fff">5</text>
+    <text x="974" y="229" font-size="20" font-weight="700" fill="#244a66">Operate</text>
+    <text x="974" y="257" font-size="15" fill="#466477">Protected state backup</text>
+    <text x="974" y="279" font-size="15" fill="#466477">Reviewed upgrades</text>
+    <text x="974" y="301" font-size="15" fill="#466477">Tested rollback path</text>
+    <rect x="973" y="322" width="164" height="24" rx="12" fill="#eaf1f7"/>
+    <text x="1055" y="338" font-size="11" font-weight="700" text-anchor="middle" fill="#3c6686">KEEP LOCAL HA ACCESS</text>
+
+    <rect x="42" y="398" width="1116" height="62" rx="12" fill="#143049"/>
+    <text x="65" y="424" font-size="16" font-weight="700" fill="#f2f8ff">A green plan is a configuration result. A working login is a runtime result.</text>
+    <text x="65" y="446" font-size="14" fill="#c1d7e5">Mock CI checks the template without an account. Complete the live acceptance checks before calling your deployment ready.</text>
+  </g>
+</svg>
