@@ -6,6 +6,12 @@ Work from infrastructure to runtime: **plan → DNS → connector → origin →
 client**. Change one layer at a time. Keep diagnostic output private until account
 IDs, hostnames, addresses, cookies and credentials are removed.
 
+For installation and process failures, use the platform-specific guides:
+[Linux / Windows / macOS](cloudflared-binaries.md) and
+[Docker / k3s diagnostics](cloudflared-containers.md#container-and-cluster-troubleshooting).
+For failed repository checks, see [CI](ci.md); CI does not deploy the connector
+or authenticate to a live Cloudflare account.
+
 ## Terraform rejects the credentials or account
 
 For 401/403 responses, check that the process running Terraform receives

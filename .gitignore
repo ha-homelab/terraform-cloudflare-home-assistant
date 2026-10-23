@@ -19,3 +19,7 @@ override.tf.json
 __pycache__/
 *.pyc
 reports/
+*.token
+cert.pem
+*.credentials.json
+local/

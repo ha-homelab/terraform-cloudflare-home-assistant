@@ -35,6 +35,16 @@ procedure over an existing hostname simply to make Terraform accept it.
 
 ## Start the connector
 
+Use the detailed guide for your chosen runtime:
+
+- [Linux, Windows or macOS binaries and background services](cloudflared-binaries.md).
+- [Docker / Compose](cloudflared-containers.md#docker-compose).
+- [k3s / Kubernetes](cloudflared-containers.md#k3s--kubernetes).
+
+These instructions use the tunnel Terraform already created. They include
+startup, upgrades, token rotation and runtime-specific diagnostics. Only one
+installation method is needed; additional connectors should be deliberate replicas.
+
 Install a supported `cloudflared` build using
 [Cloudflare's downloads](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/).
 Locate the tunnel using `terraform output -raw tunnel_id`, then retrieve its
