@@ -1,0 +1,40 @@
+# Run from the repository root; see docs/cloudflared-containers.md.
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:2026.10.3@sha256:faa8e0a1475f137c910be6025f43c8e4092fdd35461b31e19fd1390657a1ff39
+    user: "${CLOUDFLARED_UID:-65532}:${CLOUDFLARED_GID:-65532}"
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    command:
+      - tunnel
+      - --no-autoupdate
+      - --metrics
+      - 127.0.0.1:2000
+      - --grace-period
+      - 30s
+      - run
+      - --token-file
+      - /run/secrets/tunnel_token
+    secrets: [tunnel_token]
+    networks: [origin]
+    stop_grace_period: 45s
+    healthcheck:
+      test: [CMD, cloudflared, tunnel, --metrics, "127.0.0.1:2000", ready]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+secrets:
+  tunnel_token:
+    file: "${TUNNEL_TOKEN_FILE:?Set TUNNEL_TOKEN_FILE to an absolute private token file path}"
+networks:
+  origin:
+    external: true
+    name: "${HA_NETWORK:-ha-origin}"

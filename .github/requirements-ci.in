@@ -1,0 +1,4 @@
+# Validation only; never imported by Terraform or a deployed connector.
+PyYAML==6.0.3
+jsonschema==4.26.0
+markdown-it-py==4.2.0

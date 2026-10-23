@@ -9,7 +9,8 @@ Provide the API token through your environment. Ordinary setup needs no HCL edit
 ![Architecture: public Terraform code with private inputs; clients reach Home Assistant through Cloudflare and an outbound connector.](docs/publication.svg)
 
 [Quick start](#quick-start) · [Configuration](docs/configuration.md) ·
-[Runbook](docs/runbook.md) · [Troubleshooting](docs/troubleshooting.md) ·
+[Install cloudflared](#4-connect-home-assistant) · [Runbook](docs/runbook.md) ·
+[Troubleshooting](docs/troubleshooting.md) · [CI](docs/ci.md) ·
 [Existing tunnels](docs/adoption.md) · [Security](SECURITY.md)
 
 ## What you get
@@ -85,7 +86,16 @@ terraform output -raw url
 ```
 
 In Cloudflare's tunnel dashboard, select this tunnel and obtain its connector
-token privately. Start `cloudflared` where it can reach HA, set HA's external URL
+token privately. Choose the installation guide for your runtime:
+
+- [Linux, Windows and macOS binaries](docs/cloudflared-binaries.md): verified
+  downloads, token files, automatic startup and OS troubleshooting.
+- [Docker and Compose](docs/cloudflared-containers.md#docker-compose): a pinned
+  image, private file-backed secret and container networking.
+- [k3s / Kubernetes](docs/cloudflared-containers.md#k3s--kubernetes): a Deployment,
+  private Secret, probes, upgrades and cluster troubleshooting.
+
+Start `cloudflared` where it can reach HA, set HA's external URL
 to the output URL, and configure narrow reverse-proxy trust. Follow the
 [connector and HA runbook](docs/runbook.md#start-the-connector), then test from
 outside your network.
@@ -127,6 +137,11 @@ provider**, including apply tests. Provider installation still requires registry
 access or an appropriate local provider installation. The shared CI also runs
 Terraform and required security checks; `CI gate` requires all validation jobs to
 succeed.
+
+The [CI guide](docs/ci.md) explains the shared workflows and validation of runtime
+examples. CI does not run a live Terraform plan/apply, install services, deploy
+containers or connect to your cluster. Deployment credentials stay with the
+installation owner.
 
 These checks verify configuration and contracts, not a live Cloudflare account,
 DNS propagation, HA login, connector health or notifications. See the

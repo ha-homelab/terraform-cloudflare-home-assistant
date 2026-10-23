@@ -1,0 +1,3 @@
+# Keep dependency regressions in the same required CI gate as source validation.
+fail-on-severity: high
+comment-summary-in-pr: never
