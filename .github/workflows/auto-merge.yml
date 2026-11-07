@@ -1,32 +1,62 @@
-# Read trusted base metadata only; do not check out or execute PR code.
+# Trusted default-branch metadata only; never execute pull-request source.
 name: Auto Merge PRs
-'on':
+
+on:
   pull_request_target:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-      - labeled
-      - unlabeled
-      - edited
-      - converted_to_draft
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled, edited, converted_to_draft]
+  workflow_run:
+    workflows: ["Auto Approve PRs", "CI", "CodeRabbit Review Requests"]
+    types: [completed]
+  status:
+  check_run:
+    types: [completed]
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+
 permissions:
   contents: read
+
+# Keep each withdrawal event independent of coalesced ordinary evaluations.
 concurrency:
-  group: automerge-${{ github.event.pull_request.number }}-${{ (github.event.action != 'edited' || github.event.changes.base) && 'state' || github.run_id }}
-  cancel-in-progress: true
+  group: automerge-reviewed-${{ github.repository }}-${{ ((github.event.action == 'unlabeled' && github.event.label.name == 'automerge') || github.event.action == 'converted_to_draft' || (github.event.action == 'edited' && github.event.changes.base && github.event.pull_request.base.ref != github.event.repository.default_branch)) && github.run_id || 'state' }}
+  cancel-in-progress: false
+
 jobs:
   auto-merge:
     permissions:
       contents: read
       pull-requests: write
     if: >-
-      (github.event.action != 'edited' || github.event.changes.base) &&
-      contains(fromJSON('["4alvit","californiantiramisu","dependabot[bot]","renovate[bot]"]'), github.event.pull_request.user.login)
-    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/auto-merge.yml@8008fd1db4c410640e7abddfc8bc75833cdcd970 # main
+      (github.event_name == 'pull_request_target' &&
+       !((github.event.action == 'unlabeled' && github.event.label.name == 'automerge') || github.event.action == 'converted_to_draft' || (github.event.action == 'edited' && github.event.changes.base && github.event.pull_request.base.ref != github.event.repository.default_branch)) &&
+       github.event.pull_request.head.repo.full_name == github.repository &&
+       github.event.pull_request.base.ref == github.event.repository.default_branch &&
+       contains(fromJSON('["4alvit","californiantiramisu","dependabot[bot]","renovate[bot]"]'), github.event.pull_request.user.login)) ||
+      (contains(fromJSON('["workflow_run","status","check_run","schedule","workflow_dispatch"]'), github.event_name) &&
+       github.ref == format('refs/heads/{0}', github.event.repository.default_branch))
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/auto-merge.yml@ffa568e48a9510bf66dcfe01d6646f6840382431 # main
     with:
-      native-auto-merge: false
-      required-status-checks: CI gate
+      reviewed-merge: true
+      reviewed-single-pass: true
+      allow-dependabot-actions-review: true
+      allow-owned-bot-actions-review: true
+      required-status-checks: "CI gate"
+    secrets:
+      BOT_PAT: ${{ secrets.BOT_PAT }}
+
+  withdraw-auto-merge:
+    permissions:
+      contents: read
+      pull-requests: write
+    # Cancellation only, including existing fork requests and base retargets.
+    if: >-
+      github.event_name == 'pull_request_target' &&
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+      ((github.event.action == 'unlabeled' && github.event.label.name == 'automerge') || github.event.action == 'converted_to_draft' || (github.event.action == 'edited' && github.event.changes.base && github.event.pull_request.base.ref != github.event.repository.default_branch)) &&
+      contains(fromJSON('["4alvit","californiantiramisu","dependabot[bot]","renovate[bot]"]'), github.event.pull_request.user.login)
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/auto-merge.yml@ffa568e48a9510bf66dcfe01d6646f6840382431 # main
+    with:
+      withdrawal-only: true
     secrets:
       BOT_PAT: ${{ secrets.BOT_PAT }}
