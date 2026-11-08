@@ -8,6 +8,7 @@
     "custom.regex",
     "custom.jsonata",
     "docker-compose",
+    "kubernetes",
     "pip-compile",
     "pip_requirements",
     "terraform"
@@ -30,6 +31,41 @@
         ".github/requirements-ci.txt"
       ],
       "enabled": false
+    },
+    {
+      "description": [
+        "Only the coupled cloudflared runtime image is managed in the Kubernetes example; keep API versions and other dependencies unchanged."
+      ],
+      "matchManagers": [
+        "kubernetes"
+      ],
+      "enabled": false
+    },
+    {
+      "description": [
+        "Update the Compose and Kubernetes cloudflared examples together to preserve their exact-image validation contract."
+      ],
+      "matchManagers": [
+        "docker-compose",
+        "kubernetes"
+      ],
+      "matchFileNames": [
+        "examples/docker/compose.yaml",
+        "examples/k3s/cloudflared.yaml"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "cloudflare/cloudflared"
+      ],
+      "enabled": true,
+      "groupName": "Application dependencies",
+      "groupSlug": "application-dependencies",
+      "groupSingleUpdates": true,
+      "separateMajorMinor": true,
+      "separateMinorPatch": false,
+      "automerge": false
     }
   ],
   "pip_requirements": {
@@ -49,6 +85,11 @@
   "pip-compile": {
     "managerFilePatterns": [
       "/^\\.github/requirements\\-ci\\.txt$/"
+    ]
+  },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/^examples\\/k3s\\/cloudflared\\.yaml$/"
     ]
   }
 }
