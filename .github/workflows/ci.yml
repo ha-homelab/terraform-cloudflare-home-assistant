@@ -11,13 +11,13 @@ concurrency:
   cancel-in-progress: true
 jobs:
   scope:
-    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/change-scope.yml@95eb33d1330d4ff43840501688c640dc2c3c12fa # main
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/change-scope.yml@31e38f0f9fb9a48a0f52609f3dbed92b08cb1926 # main
     with:
       force-full: false
   terraform:
     if: ${{ needs.scope.outputs.run == 'true' }}
     needs: ["scope"]
-    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/terraform-ci.yml@95eb33d1330d4ff43840501688c640dc2c3c12fa # main
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/terraform-ci.yml@31e38f0f9fb9a48a0f52609f3dbed92b08cb1926 # main
     with:
       terraform-version: 1.15.7
       tflint-enabled: false
@@ -89,7 +89,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/security-scan.yml@95eb33d1330d4ff43840501688c640dc2c3c12fa # main
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/security-scan.yml@31e38f0f9fb9a48a0f52609f3dbed92b08cb1926 # main
     with:
       languages: actions,python
       run-codeql: true
@@ -100,7 +100,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/security-required.yml@95eb33d1330d4ff43840501688c640dc2c3c12fa # main
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/security-required.yml@31e38f0f9fb9a48a0f52609f3dbed92b08cb1926 # main
   gate:
     name: CI gate
     needs: ["contracts", "documentation", "scope", "security", "security-analysis", "terraform"]
